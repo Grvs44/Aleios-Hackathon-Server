@@ -11,15 +11,21 @@ class Profile(Model):
         return str(self.user)
 
 
+class Tag(Model):
+    name = CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+
 class Post(Model):
     owner = ForeignKey(Profile, on_delete=CASCADE)
     description = TextField()
-    interested = ManyToManyField(Profile, related_name='interested')
+    interested = ManyToManyField(Profile, related_name='interested', blank=True)
     post_time = DateTimeField(auto_now_add=True)
     modified_time = DateTimeField(auto_now=True)
-    start_time = DateTimeField()
-    end_time = DateTimeField()
-
+    start_time = DateTimeField(blank=True)
+    end_time = DateTimeField(blank=True)
+    tags = ManyToManyField(Tag, related_name='tags', blank=True)
     def __str__(self):
         return '%s at %s' % (str(self.owner), str(self.post_time))
 

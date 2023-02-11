@@ -27,6 +27,12 @@ class CommentSerializer(ModelSerializer):
         model = models.Comment
 
 
+class TagSerializer(ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Tag
+
+
 # https://stackoverflow.com/questions/43031323/how-to-create-a-new-user-with-django-rest-framework-and-custom-user-model
 class UserSerializer(ModelSerializer):
     password = CharField(write_only=True)

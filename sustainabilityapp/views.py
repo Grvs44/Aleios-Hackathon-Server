@@ -20,15 +20,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsPostOwner]
     authentication_classes = [TokenAuthentication,SessionAuthentication]
     filter_backends = [filters.PostOwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
+    filterset_fields = ['tags']
     def perform_create(self, serializer):
         serializer.save(profile=models.Profile.objects.get(user=self.request.user))
-
 
 
 class ImageViewSet(viewsets.ModelViewSet):
@@ -43,6 +44,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsCommentOwner]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = models.Tag.objects.all()
+    serializer_class = TagSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
 
