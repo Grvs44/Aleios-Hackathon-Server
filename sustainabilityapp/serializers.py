@@ -29,7 +29,7 @@ class CommentSerializer(ModelSerializer):
 
 class TagSerializer(ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'name')
         model = models.Tag
 
 

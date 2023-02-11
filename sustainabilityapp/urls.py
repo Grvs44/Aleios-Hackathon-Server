@@ -10,6 +10,7 @@ router.register(r'user', UserViewSet)
 router.register(r'post', PostViewSet)
 router.register(r'image', ImageViewSet)
 router.register(r'comment', CommentViewSet)
+router.register(r'tag', TagViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -19,8 +19,8 @@ class Post(Model):
     interested = ManyToManyField(User, related_name='interested', blank=True)
     post_time = DateTimeField(auto_now_add=True)
     modified_time = DateTimeField(auto_now=True)
-    start_time = DateTimeField(blank=True)
-    end_time = DateTimeField(blank=True)
+    start_time = DateTimeField(blank=True, null=True)
+    end_time = DateTimeField(blank=True, null=True)
     tags = ManyToManyField(Tag, related_name='tags', blank=True)
     def __str__(self):
         return '%s at %s' % (str(self.owner), str(self.post_time))

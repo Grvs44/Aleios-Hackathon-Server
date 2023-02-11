@@ -14,7 +14,7 @@ class IsPostOwner(BasePermission):
         if view.action == 'retrieve':
             return True
         else:
-            return obj.owner.user == request.user
+            return obj.owner == request.user
 
 
 class IsImageOwner(BasePermission):
@@ -22,7 +22,7 @@ class IsImageOwner(BasePermission):
         if view.action == 'retrieve':
             return True
         else:
-            return obj.post.owner.user == request.user
+            return obj.post.owner == request.user
 
 
 class IsCommentOwner(BasePermission):
@@ -30,4 +30,4 @@ class IsCommentOwner(BasePermission):
         if view.action == 'retrieve':
             return True
         else:
-            return obj.owner.user == request.user
+            return obj.owner == request.user

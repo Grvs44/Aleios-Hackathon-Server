@@ -19,7 +19,6 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [filters.OwnerFilter, SearchFilter,
                        DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['id']
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -38,7 +37,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsImageOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['id', 'post']
+    filterset_fields = ['post']
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -47,19 +46,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsCommentOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['id', 'post']
+    filterset_fields = ['post']
 
     def perform_create(self, serializer):
         serializer.save(profile=models.Profile.objects.get(
             user=self.request.user))
 
 
-class TagViewSet(viewsets.ModelViewSet):
+class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Tag.objects.all()
     serializer_class = TagSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['id', 'post']
 
 
 class UserCreateAPIView(generics.CreateAPIView):
