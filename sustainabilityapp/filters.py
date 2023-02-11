@@ -9,4 +9,4 @@ class OwnerFilter(BaseFilterBackend):
 
 class PostOwnerFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
-        return queryset.filter(owner=request.user)
+        return queryset#.filter(owner=request.user)

@@ -15,7 +15,7 @@ from . import models
 class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsOwner]
+    permission_classes = [permissions.IsOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [filters.OwnerFilter, SearchFilter,
                        DjangoFilterBackend, OrderingFilter]
@@ -25,7 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsPostOwner]
+    permission_classes = [permissions.IsPostOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [filters.PostOwnerFilter,
                        SearchFilter, DjangoFilterBackend, OrderingFilter]
@@ -35,8 +35,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [
-        permissions.IsAuthenticated, permissions.IsImageOwner]
+    permission_classes = [permissions.IsImageOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['id', 'post']
@@ -45,8 +44,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [
-        permissions.IsAuthenticated, permissions.IsCommentOwner]
+    permission_classes = [permissions.IsCommentOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['id', 'post']
@@ -78,6 +76,7 @@ class LoginView(knox.views.LoginView):
             'expiry': self.format_expiry_datetime(instance.expiry),
             'token': token,
             'user': request.user.id,
+            'first_name': request.user.first_name,
         }
         if UserSerializer is not None:
             data["user"] = UserSerializer(
