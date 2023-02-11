@@ -39,6 +39,14 @@ class ImageViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
 
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = models.Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated, permissions.IsCommentOwner]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+
+
 class UserCreateAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer

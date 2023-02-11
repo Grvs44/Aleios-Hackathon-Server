@@ -24,6 +24,13 @@ class Post(Model):
         return '%s at %s' % (str(self.owner), str(self.post_time))
 
 
+class Comment(Model):
+    post = ForeignKey(Post, on_delete=CASCADE)
+    owner = ForeignKey(Profile, on_delete=CASCADE)
+    text = TextField()
+    post_time = DateTimeField(auto_now_add=True)
+
+
 class Image(Model):
     post = ForeignKey(Post, on_delete=CASCADE)
     alt_text = CharField(max_length=50)

@@ -21,6 +21,12 @@ class ImageSerializer(ModelSerializer):
         model = models.Image
 
 
+class CommentSerializer(ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Comment
+
+
 # https://stackoverflow.com/questions/43031323/how-to-create-a-new-user-with-django-rest-framework-and-custom-user-model
 class UserSerializer(ModelSerializer):
     password = CharField(write_only=True)
