@@ -15,8 +15,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = models.Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [filters.OwnerFilter, SearchFilter, DjangoFilterBackend, OrderingFilter]
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -25,8 +25,8 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsPostOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [filters.PostOwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [filters.PostOwnerFilter, SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['tags']
     def perform_create(self, serializer):
         serializer.save(profile=models.Profile.objects.get(user=self.request.user))
@@ -36,8 +36,8 @@ class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsImageOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
