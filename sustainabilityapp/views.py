@@ -1,10 +1,7 @@
 from django.contrib.auth.models import User
-from django.db.models import Q
-from rest_framework import viewsets
-from rest_framework.views import APIView
+from rest_framework import viewsets, generics
+from rest_framework.permissions import AllowAny
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from knox.auth import TokenAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
@@ -23,33 +20,25 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-class DonationPostViewSet(viewsets.ModelViewSet):
-    queryset = models.DonationPost.objects.all()
-    serializer_class = DonationPostSerializer
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = models.Post.objects.all()
+    serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated,IsOwner]
     authentication_classes = [TokenAuthentication,SessionAuthentication]
     filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
     def perform_create(self, serializer):
         serializer.save(profile=models.Profile.objects.get(user=self.request.user))
 
-class EventPostViewSet(viewsets.ModelViewSet):
-    queryset = models.EventPost.objects.all()
-    serializer_class = EventPostSerializer
-    permission_classes = [permissions.IsAuthenticated,IsOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
-    def perform_create(self, serializer):
-        serializer.save(profile=models.Profile.objects.get(user=self.request.user))
 
-"""
+
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticated,IsOwner]
     authentication_classes = [TokenAuthentication,SessionAuthentication]
     filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
-"""
 
+"""
 class SignUpView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = []
@@ -64,3 +53,9 @@ class SignUpView(APIView):
             return Response({'detail': 'Created user'})
         except KeyError:
             return Response({'detail': 'Username and password are required'}, 400)
+"""
+
+class UserCreateAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
