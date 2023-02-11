@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
 from knox.auth import TokenAuthentication
+import knox.views
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import *
 from . import permissions
@@ -59,3 +60,26 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
+
+
+class LoginView(knox.views.LoginView):
+    def get_post_response_data(self, request, token, instance):
+        UserSerializer = self.get_user_serializer_class()
+        try:
+            profile = models.Profile.objects.get(user=request.user)
+        except models.Profile.DoesNotExist:
+            profile = models.Profile(user=request.user)
+            profile.save()
+
+        data = {
+            'expiry': self.format_expiry_datetime(instance.expiry),
+            'token': token,
+            'first_name': request.user.first_name,
+            'profile': profile.id,
+        }
+        if UserSerializer is not None:
+            data["user"] = UserSerializer(
+                request.user,
+                context=self.get_context()
+            ).data
+        return data
