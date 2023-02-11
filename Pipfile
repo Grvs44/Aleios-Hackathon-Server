@@ -9,6 +9,7 @@ django-rest-framework = "*"
 django-rest-knox = "*"
 django-filter = "*"
 pillow = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
