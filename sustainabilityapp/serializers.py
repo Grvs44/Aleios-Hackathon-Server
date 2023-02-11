@@ -2,12 +2,12 @@ from rest_framework.serializers import ModelSerializer, CharField
 from django.contrib.auth import get_user_model
 from . import models
 
-
+"""
 class ProfileSerializer(ModelSerializer):
     class Meta:
         exclude = ['user']
         model = models.Profile
-
+"""
 
 class PostSerializer(ModelSerializer):
     class Meta:
@@ -39,12 +39,10 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'username', 'password')
+        fields = ('id', 'first_name', 'last_name', 'username', 'password')
 
     def create(self, validated_data):
         user = super(UserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
-        profile = models.Profile(user=user)
-        profile.save()
         return user

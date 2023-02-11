@@ -1,14 +1,10 @@
+from django.contrib.auth.models import AbstractUser
 from django.db.models import *
-from django.conf import settings
 
 
-class Profile(Model):
-    user = ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE)
+class User(AbstractUser):
     bio = CharField(max_length=100)
     join_date = DateField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.user)
 
 
 class Tag(Model):
@@ -18,9 +14,9 @@ class Tag(Model):
 
 
 class Post(Model):
-    owner = ForeignKey(Profile, on_delete=CASCADE)
+    owner = ForeignKey(User, on_delete=CASCADE)
     description = TextField()
-    interested = ManyToManyField(Profile, related_name='interested', blank=True)
+    interested = ManyToManyField(User, related_name='interested', blank=True)
     post_time = DateTimeField(auto_now_add=True)
     modified_time = DateTimeField(auto_now=True)
     start_time = DateTimeField(blank=True)
@@ -32,7 +28,7 @@ class Post(Model):
 
 class Comment(Model):
     post = ForeignKey(Post, on_delete=CASCADE)
-    owner = ForeignKey(Profile, on_delete=CASCADE)
+    owner = ForeignKey(User, on_delete=CASCADE)
     text = TextField()
     post_time = DateTimeField(auto_now_add=True)
 

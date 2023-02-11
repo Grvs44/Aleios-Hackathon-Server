@@ -141,3 +141,4 @@ REST_KNOX = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+AUTH_USER_MODEL = 'sustainabilityapp.User'

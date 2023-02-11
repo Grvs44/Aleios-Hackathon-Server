@@ -12,41 +12,48 @@ from . import filters
 from . import models
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = models.Profile.objects.all()
-    serializer_class = ProfileSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = models.User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [filters.OwnerFilter, SearchFilter,
+                       DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id']
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsPostOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [filters.PostOwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [filters.PostOwnerFilter,
+                       SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['tags']
-    def perform_create(self, serializer):
-        serializer.save(profile=models.Profile.objects.get(user=self.request.user))
 
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsImageOwner]
-    authentication_classes = [TokenAuthentication,SessionAuthentication]
-    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    permission_classes = [
+        permissions.IsAuthenticated, permissions.IsImageOwner]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id', 'post']
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsCommentOwner]
+    permission_classes = [
+        permissions.IsAuthenticated, permissions.IsCommentOwner]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id', 'post']
+
+    def perform_create(self, serializer):
+        serializer.save(profile=models.Profile.objects.get(
+            user=self.request.user))
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -54,6 +61,7 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id', 'post']
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -65,17 +73,11 @@ class UserCreateAPIView(generics.CreateAPIView):
 class LoginView(knox.views.LoginView):
     def get_post_response_data(self, request, token, instance):
         UserSerializer = self.get_user_serializer_class()
-        try:
-            profile = models.Profile.objects.get(user=request.user)
-        except models.Profile.DoesNotExist:
-            profile = models.Profile(user=request.user)
-            profile.save()
 
         data = {
             'expiry': self.format_expiry_datetime(instance.expiry),
             'token': token,
-            'first_name': request.user.first_name,
-            'profile': profile.id,
+            'user': request.user.id,
         }
         if UserSerializer is not None:
             data["user"] = UserSerializer(
