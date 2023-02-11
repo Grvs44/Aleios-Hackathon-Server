@@ -1,6 +1,7 @@
-from django.core.exceptions import FieldError
+from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -48,3 +49,18 @@ class ImageViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication,SessionAuthentication]
     filter_backends = [filters.OwnerFilter,SearchFilter,DjangoFilterBackend,OrderingFilter]
 """
+
+class SignUpView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = []
+    def post(self, request):
+        try:
+            username = request.data['username']
+            password = request.data['password']
+            user = User.objects.create_user(username=username, password=password)
+            user.save()
+            profile = models.Profile(user=user)
+            profile.save()
+            return Response({'detail': 'Created user'})
+        except KeyError:
+            return Response({'detail': 'Username and password are required'}, 400)

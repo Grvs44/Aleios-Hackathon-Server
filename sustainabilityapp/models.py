@@ -4,7 +4,7 @@ from django.conf import settings
 
 class Profile(Model):
     user = ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE)
-    user_name = CharField(max_length=50, blank=False)
+    #user_name = CharField(max_length=50, blank=False)#?
     bio = CharField(max_length=100)
     join_date = DateField(auto_now_add=True)
 
