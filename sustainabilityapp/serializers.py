@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, CharField
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from . import models
 
 
@@ -11,11 +11,13 @@ class ProfileSerializer(ModelSerializer):
 
 class PostSerializer(ModelSerializer):
     class Meta:
+        fields = '__all__'
         model = models.Post
 
 
 class ImageSerializer(ModelSerializer):
     class Meta:
+        fields = '__all__'
         model = models.Image
 
 
@@ -24,11 +26,13 @@ class UserSerializer(ModelSerializer):
     password = CharField(write_only=True)
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('first_name', 'last_name', 'username', 'password')
 
     def create(self, validated_data):
         user = super(UserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
+        profile = models.Profile(user=user)
+        profile.save()
         return user
