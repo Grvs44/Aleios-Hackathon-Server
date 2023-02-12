@@ -12,19 +12,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(*(omq10$)^byi*c2@ze7ocxppvc$m(=d5$p5$#-try$kjvcm%'
+# Enable debug mode if environment variable is set
+DEBUG = os.environ.get('HACKATHON_DEBUG') is not None
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if DEBUG:
+    # Use default secret key when in debug mode
+    SECRET_KEY = 'django-insecure-(*(omq10$)^byi*c2@ze7ocxppvc$m(=d5$p5$#-try$kjvcm%'
+else:
+    # Use a randomly generated secret key when in production mode
+    import secrets
+    SECRET_KEY = secrets.token_urlsafe(50)
 
 ALLOWED_HOSTS = ['*']
 

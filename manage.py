@@ -7,6 +7,10 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hackathon.settings')
+    if '-d' in sys.argv:
+        # Set environment variable to run in debug mode
+        os.environ.setdefault('HACKATHON_DEBUG', 'd')
+        sys.argv.remove('-d')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

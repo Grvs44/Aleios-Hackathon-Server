@@ -17,9 +17,9 @@
   python manage.py migrate
   ```
 
-- Run the server
+- Run the server in debug mode (remove the `-d` for production mode - uploads and static won't be served by Django)
   ```cmd
-  python manage.py runserver
+  python manage.py runserver -d
   ```
 
 ## API endpoints
