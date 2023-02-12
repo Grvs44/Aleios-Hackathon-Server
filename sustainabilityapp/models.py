@@ -36,7 +36,7 @@ class Comment(Model):
 class Image(Model):
     post = ForeignKey(Post, on_delete=CASCADE)
     alt_text = CharField(max_length=50)
-    image = ImageField(upload_to='uploads/')
+    image = ImageField()
 
     def __str__(self):
         return 'Image "%s" for post %s' % (str(self.alt_text), str(self.post))
