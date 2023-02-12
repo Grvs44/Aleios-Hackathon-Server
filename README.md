@@ -1,4 +1,9 @@
 # Aleios-Hackathon-Server
+See the `hackathon` and `sustainabilityapp` folders for documentation
+- The Django project is hosted at https://sustainabilityoncampus.eu.pythonanywhere.com/
+- The React frontend is hosted at https://alieos.vercel.app/
+- The React repository is at https://github.com/Abdul-Asa/Alieos
+
 ## Installation
 - Configure the virtualenv
   ```cmd

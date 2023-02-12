@@ -33,16 +33,6 @@ class Post(Model):
     def __str__(self):
         return '%s by %s at %s' % (str(self.category), str(self.owner), str(self.post_time))
 
-    #def clean(self):
-    #    tags_same_category = self.tags.filter(Q(category=self.category))#Q(id__in=F('tags'))
-    #    print('OUT', tags_same_category, self.tags.all())
-    #    if tags_same_category.count() != self.tags.all().count():
-    #        raise ValidationError('Posts can only be tagged with tags of the same category')
-
-    #def save(self, *args, **kwargs):
-    #    self.full_clean()
-    #    return super().save(*args, **kwargs)
-
 
 class Comment(Model):
     post = ForeignKey(Post, on_delete=CASCADE)
