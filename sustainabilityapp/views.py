@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsPostOwner]
+    permission_classes = [permissions.IsPostOwner, permissions.IsAuthenticatedOrReadOnly]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [filters.PostOwnerFilter,
                        SearchFilter, DjangoFilterBackend, OrderingFilter]
@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [permissions.IsImageOwner]
+    permission_classes = [permissions.IsImageOwner, permissions.IsAuthenticatedOrReadOnly]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['post']
@@ -43,7 +43,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsCommentOwner]
+    permission_classes = [permissions.IsCommentOwner, permissions.IsAuthenticatedOrReadOnly]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['post']
