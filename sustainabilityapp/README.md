@@ -66,7 +66,7 @@
   - When the user is created, the value passed in as the password is given to the `set_password` method, so the password is stored correctly (ie the hash instead of plaintext)
 
 ## `urls.py`
-- Includes all the URL patterns of the API (see the API documentation in `/README.md`)
+- Includes all the URL patterns of the API (see the API endpoint documentation in `/README.md`)
 - Includes the URL patterns for the `knox` package (which manages `TokenAuthentication`) individually
   - This was because the `LoginView` needed to be modified - see `views.LoginView`
 - Statically serves the `MEDIA_ROOT` folder at `MEDIA_URL` (both defined in `/hackathon/settings.py`), but only when `DEBUG = True`
