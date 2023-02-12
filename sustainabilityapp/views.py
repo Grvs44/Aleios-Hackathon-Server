@@ -60,12 +60,6 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
 
 
-class UserCreateAPIView(generics.CreateAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
-
-
 class LoginView(knox.views.LoginView):
     def get_post_response_data(self, request, token, instance):
         UserSerializer = self.get_user_serializer_class()

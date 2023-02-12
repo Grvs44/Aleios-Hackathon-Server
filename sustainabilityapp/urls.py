@@ -20,5 +20,4 @@ urlpatterns = [
     path(r'auth/logout/', knox.views.LogoutView.as_view(), name='knox_logout'),
     path(r'auth/logoutall/', knox.views.LogoutAllView.as_view(),
          name='knox_logoutall'),
-    path('auth/signup/', UserCreateAPIView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
