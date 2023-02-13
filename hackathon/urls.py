@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('sustainabilityapp.urls')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('admin/', admin.site.urls),
 ]

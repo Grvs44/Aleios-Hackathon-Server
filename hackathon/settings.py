@@ -39,6 +39,8 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'sustainabilityapp',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     'django_filters',
     'knox',
     'django.contrib.admin',

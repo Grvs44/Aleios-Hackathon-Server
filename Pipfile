@@ -10,6 +10,7 @@ django-rest-knox = "*"
 django-filter = "*"
 pillow = "*"
 django-cors-headers = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 
